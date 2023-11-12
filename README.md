@@ -18,6 +18,19 @@ del dominio per definire dettagli non specificati nella traccia.
 
 # Documentazione
 
+## Domini
+
+```SQL
+--DOMINIO TIPOLOGIA_TRANSAZIONE
+
+CREATE DOMAIN tipologia_transazione AS 
+    VARCHAR NOT NULL CHECK (VALUE ~ 'Entrata' OR
+                            VALUE ~ 'Uscita' OR
+                            VALUE ~ 'Trasferimento');
+```
+
+## Tabelle
+
 ```SQL
 --TABELLA DEI PORTAFOGLI
 
