@@ -18,7 +18,7 @@ del dominio per definire dettagli non specificati nella traccia.
 
 # Documentazione
 
-'''SQL
+```SQL
 --TABELLA DEI PORTAFOGLI
 
 CREATE TABLE portafolgo(
@@ -27,9 +27,9 @@ CREATE TABLE portafolgo(
     --NOME_PORTAFOGLIO nome assegnato al portafolgio
     nome_portafoglio varchar(255)
 );
-'''
+```
 
-'''SQL
+```SQL
 --TABELLA DEI CONTI
 
 CREATE TABLE conto(
@@ -42,9 +42,9 @@ CREATE TABLE conto(
     --SALDO saldo relativo al conto
     saldo decimal
 );
-'''
+```
 
-'''SQL
+```SQL
 --TABELLA DELLE TRANSAZIONI
 
 CREATE TABLE transazione(
@@ -57,4 +57,4 @@ CREATE TABLE transazione(
     --VALORE identifica l'importo della transazione
     valore decimal
 );
-'''
+```
