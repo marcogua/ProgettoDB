@@ -20,6 +20,7 @@ del dominio per definire dettagli non specificati nella traccia.
 
 ## Domini
 
+### Tipologia transazione
 ```SQL
 --DOMINIO TIPOLOGIA_TRANSAZIONE
 
@@ -29,45 +30,56 @@ CREATE DOMAIN tipologia_transazione AS
                             VALUE ~ 'Trasferimento');
 ```
 
+### Categoria transazione
+```SQL
+--DOMINIO CATEGORIA_TRANSAZIONE
+
+CREATE DOMAIN categoria_transazione AS 
+    VARCHAR NOT NULL CHECK (VALUE ~ 'Intrattenimento' OR
+                            VALUE ~ 'Tasse' OR
+                            VALUE ~ 'Stipendio');
+```
+
 ## Tabelle
 
+### Portafoglio
 ```SQL
 --TABELLA DEI PORTAFOGLI
 
-CREATE TABLE portafolgo(
+CREATE TABLE portafoglio(
     --ID_PORTAFOLGIO identifica univocamente un portafoglio
-    id_portafoglio int,
+    id_portafoglio int NOT NULL,
     --NOME_PORTAFOGLIO nome assegnato al portafolgio
-    nome_portafoglio varchar(255)
+    nome_portafoglio varchar(255) NOT NULL
 );
 ```
-
+### Conto
 ```SQL
 --TABELLA DEI CONTI
 
 CREATE TABLE conto(
     --ID_CONTO identifica univocamente un conto
-    id_conto int,
+    id_conto int NOT NULL,
     --NOME_CONTO nome assegnato al conto
-    nome_conto varchar(255),
+    nome_conto varchar(255) NOT NULL,
     --IBAN iban realtivo al conto se presete
     iban varchar(26),
     --SALDO saldo relativo al conto
-    saldo decimal
+    saldo decimal NOT NULL DEFAULT 0.00
 );
 ```
-
+### Transazione
 ```SQL
 --TABELLA DELLE TRANSAZIONI
 
 CREATE TABLE transazione(
     --ID_TRANSAZIONE identifica univocamente una transazione
-    id_transazione int,
+    id_transazione int NOT NULL,
     --TIPOLOGIA_TRANSAZIONE identifica la tipologia di transazione(entrata/uscita/trasferimento)
-    tipologia_transazione varchar(255),
+    tipologia_transazione tipologia_transazione,
     --CATEGORIA_TRASAZIONE identifica la vategoria della transazione(svago/tasse/affitto)
-    categoria_transazione varchar(255),
+    categoria_transazione categoria_transazione,
     --VALORE identifica l'importo della transazione
-    valore decimal
+    valore decimal NOT NULL
 );
 ```
