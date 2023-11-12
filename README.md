@@ -17,3 +17,44 @@ specifico gruppo, oppure registrare una transazione manualmente. Si utilizzino l
 del dominio per definire dettagli non specificati nella traccia.
 
 # Documentazione
+
+'''SQL
+--TABELLA DEI PORTAFOGLI
+
+CREATE TABLE portafolgo(
+    --ID_PORTAFOLGIO identifica univocamente un portafoglio
+    id_portafoglio int,
+    --NOME_PORTAFOGLIO nome assegnato al portafolgio
+    nome_portafoglio varchar(255)
+);
+'''
+
+'''SQL
+--TABELLA DEI CONTI
+
+CREATE TABLE conto(
+    --ID_CONTO identifica univocamente un conto
+    id_conto int,
+    --NOME_CONTO nome assegnato al conto
+    nome_conto varchar(255),
+    --IBAN iban realtivo al conto se presete
+    iban varchar(26),
+    --SALDO saldo relativo al conto
+    saldo decimal
+);
+'''
+
+'''SQL
+--TABELLA DELLE TRANSAZIONI
+
+CREATE TABLE transazione(
+    --ID_TRANSAZIONE identifica univocamente una transazione
+    id_transazione int,
+    --TIPOLOGIA_TRANSAZIONE identifica la tipologia di transazione(entrata/uscita/trasferimento)
+    tipologia_transazione varchar(255),
+    --CATEGORIA_TRASAZIONE identifica la vategoria della transazione(svago/tasse/affitto)
+    categoria_transazione varchar(255),
+    --VALORE identifica l'importo della transazione
+    valore decimal
+);
+'''
