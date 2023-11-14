@@ -48,7 +48,7 @@ CREATE DOMAIN categoria_transazione AS
 
 CREATE TABLE portafoglio(
     --ID_PORTAFOLGIO identifica univocamente un portafoglio
-    id_portafoglio int NOT NULL,
+    id_portafoglio int PRIMARY KEY,
     --NOME_PORTAFOGLIO nome assegnato al portafolgio
     nome_portafoglio varchar(255) NOT NULL
 );
@@ -59,13 +59,18 @@ CREATE TABLE portafoglio(
 
 CREATE TABLE conto(
     --ID_CONTO identifica univocamente un conto
-    id_conto int NOT NULL,
+    id_conto int PRIMARY KEY,
     --NOME_CONTO nome assegnato al conto
     nome_conto varchar(255) NOT NULL,
     --IBAN iban realtivo al conto se presete
     iban varchar(26),
     --SALDO saldo relativo al conto
-    saldo decimal NOT NULL DEFAULT 0.00
+    saldo decimal NOT NULL DEFAULT 0.00,
+    id_portafoglio int,
+    CONSTRAINT FK_id_portafoglio FOREIGN KEY(id_portafoglio)
+        REFERENCES portafoglio(id_portafoglio)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 ```
 ### Transazione
@@ -74,12 +79,17 @@ CREATE TABLE conto(
 
 CREATE TABLE transazione(
     --ID_TRANSAZIONE identifica univocamente una transazione
-    id_transazione int NOT NULL,
+    id_transazione int PRIMARY KEY,
     --TIPOLOGIA_TRANSAZIONE identifica la tipologia di transazione(entrata/uscita/trasferimento)
     tipologia_transazione tipologia_transazione,
     --CATEGORIA_TRASAZIONE identifica la vategoria della transazione(svago/tasse/affitto)
     categoria_transazione categoria_transazione,
     --VALORE identifica l'importo della transazione
-    valore decimal NOT NULL
+    valore decimal NOT NULL,
+    id_conto int,
+    CONSTRAINT FK_id_conto FOREIGN KEY(id_conto)
+        REFERENCES conto(id_conto)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 ```
