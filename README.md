@@ -93,3 +93,80 @@ CREATE TABLE transazione(
         ON UPDATE CASCADE
 );
 ```
+
+## Trigger
+
+### Creazione chiave primaria Portafoglio
+
+```SQL
+--Trigger per settare la chiave primaria automaticamente
+CREATE OR REPLACE FUNCTION PortafoglioPK()
+    RETURNS TRIGGER
+AS $$
+DECLARE
+    pk portafoglio.id_portafoglio%TYPE;
+BEGIN
+	SELECT MAX(id_portafoglio) + 1 into pk FROM portafoglio;
+    IF(NEW.id_portafoglio != pk)THEN
+        NEW.id_portafoglio := pk;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER PortafoglioPK
+BEFORE INSERT
+ON portafoglio
+FOR EACH ROW
+EXECUTE PROCEDURE PortafoglioPK();
+```
+
+### Creazione chiave primaria Conto
+
+```SQL
+--Trigger per settare la chiave primaria automaticamente
+CREATE OR REPLACE FUNCTION ContoPK()
+    RETURNS TRIGGER
+AS $$
+DECLARE
+    pk conto.id_conto%TYPE;
+BEGIN
+	SELECT MAX(id_conto) + 1 into pk FROM conto;
+    IF(NEW.id_conto != pk)THEN
+        NEW.id_conto := pk;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER ContoPK
+BEFORE INSERT
+ON conto
+FOR EACH ROW
+EXECUTE PROCEDURE ContoPK();
+```
+
+### Creazione chiave primaria Transazione
+
+```SQL
+--Trigger per settare la chiave primaria automaticamente
+CREATE OR REPLACE FUNCTION TransazionePK()
+    RETURNS TRIGGER
+AS $$
+DECLARE
+    pk Transazione.id_transazione%TYPE;
+BEGIN
+	SELECT MAX(id_transazione) + 1 into pk FROM transazione;
+    IF(NEW.id_transazione != pk)THEN
+        NEW.id_transazione := pk;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER TransazionePK
+BEFORE INSERT
+ON transazione
+FOR EACH ROW
+EXECUTE PROCEDURE TransazionePK();
+```

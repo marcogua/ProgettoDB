@@ -15,3 +15,24 @@ CREATE TABLE transazione(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+--Trigger per settare la chiave primaria automaticamente
+CREATE OR REPLACE FUNCTION TransazionePK()
+    RETURNS TRIGGER
+AS $$
+DECLARE
+    pk Transazione.id_transazione%TYPE;
+BEGIN
+	SELECT MAX(id_transazione) + 1 into pk FROM transazione;
+    IF(NEW.id_transazione != pk)THEN
+        NEW.id_transazione := pk;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER TransazionePK
+BEFORE INSERT
+ON transazione
+FOR EACH ROW
+EXECUTE PROCEDURE TransazionePK();

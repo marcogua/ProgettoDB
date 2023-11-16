@@ -15,3 +15,24 @@ CREATE TABLE conto(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+--Trigger per settare la chiave primaria automaticamente
+CREATE OR REPLACE FUNCTION ContoPK()
+    RETURNS TRIGGER
+AS $$
+DECLARE
+    pk conto.id_conto%TYPE;
+BEGIN
+	SELECT MAX(id_conto) + 1 into pk FROM conto;
+    IF(NEW.id_conto != pk)THEN
+        NEW.id_conto := pk;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER ContoPK
+BEFORE INSERT
+ON conto
+FOR EACH ROW
+EXECUTE PROCEDURE ContoPK();
