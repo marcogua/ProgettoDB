@@ -40,6 +40,20 @@ CREATE DOMAIN categoria_transazione AS
                             VALUE ~ 'Stipendio');
 ```
 
+### Tipo Relazione
+```SQL
+-- DOMINIO Tipo relazione
+
+CREATE DOMAIN TipoRelazione AS 
+    VARCHAR(1000) NOT NULL CHECK(
+                                VALUE = 'Fratello-Sorella' OR
+                                VALUE = 'Coniuge' OR
+                                VALUE = 'Figlio-Figlia' OR
+                                VALUE = 'Parente' OR
+                                VALUE = 'Amico');
+```
+
+
 ## Tabelle
 
 ### Portafoglio
@@ -69,6 +83,34 @@ CREATE TABLE conto(
     id_portafoglio int,
     CONSTRAINT FK_id_portafoglio FOREIGN KEY(id_portafoglio)
         REFERENCES portafoglio(id_portafoglio)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+```
+
+### Persona
+```SQL
+--TABELLA DEI Persona
+
+CREATE TABLE Persona(
+    Nome VARCHAR(1000),
+    Cognome VARCHAR(1000),
+    -- identificativo per la persona
+    CodiceFiscale CHAR(16) PRIMARY KEY,
+    telefono VARCHAR(1000)
+);
+```
+
+### Membreo
+```SQL
+--TABELLA DEI Membreo
+
+CREATE TABLE Membro(
+    Relazione TipoRelazione,
+    CodiceFiscale CHAR(16),
+
+    CONSTRAINT fk_Membro FOREIGN KEY(CodiceFiscale)
+        REFERENCES Persona(codicefiscale)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
@@ -170,3 +212,4 @@ ON transazione
 FOR EACH ROW
 EXECUTE PROCEDURE TransazionePK();
 ```
+
