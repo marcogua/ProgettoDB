@@ -213,3 +213,22 @@ FOR EACH ROW
 EXECUTE PROCEDURE TransazionePK();
 ```
 
+## Inserimenti
+
+### Portafogli
+
+```SQL
+--Inserimenti di esempio
+INSERT INTO portafoglio VALUES(1, 'Personale');
+INSERT INTO portafoglio VALUES(2, 'Familiare');
+INSERT INTO portafoglio VALUES(3, 'Aziendale');
+```
+
+### Conti
+
+```SQL
+--Inserimenti di esempio
+INSERT INTO conto VALUES(1, 'Contanti', null , 51.25, 1);
+INSERT INTO conto VALUES(2, 'BBVA'; 'IT01S0000000000DSF00000002', 4523.89, 1);
+INSERT INTO conto VALUES(3, 'Hype', 'IT02H0000000000DSF00000001', 1235.22, 1);
+```
