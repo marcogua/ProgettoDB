@@ -7,7 +7,7 @@ CREATE DOMAIN TipoRelazione AS
                                 VALUE = 'Amico')
 
 CREATE TABLE Membro(
-    Relazione TipoRelazione
+    Relazione TipoRelazione,
     CodiceFiscale CHAR(16),
 
     CONSTRAINT fk_Membro FOREIGN KEY(CodiceFiscale)
