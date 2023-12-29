@@ -1,13 +1,16 @@
 # ProgettoDB
+
 Progetto di base di dati 23/24
 
-# Autori
+## Autori
+
 |Matricola|Nome|Cognome|
 |---------|----|-------|
 |N86002851|Marco|Guadagno|
 |N86002863|Vittorio|Somma|
 
-# Traccia
+## Traccia
+
 SavingMoneyUnina è un sistema che permette di tenere sotto controllo le finanze personali o familiari.
 Permette di collegare più carte di credito o debito, proprie o di un altro membro della famiglia gestendo
 le transazioni in entrata ed in uscita. Il sistema permette di suddividere le transazioni in gruppi
@@ -16,11 +19,12 @@ possibile sincronizzare automaticamente le transazioni effettuate da una carta a
 specifico gruppo, oppure registrare una transazione manualmente. Si utilizzino le proprie conoscenze
 del dominio per definire dettagli non specificati nella traccia.
 
-# Documentazione
+## Documentazione
 
-## Domini
+### Domini
 
-### Tipologia transazione
+#### Tipologia transazione
+
 ```SQL
 --DOMINIO TIPOLOGIA_TRANSAZIONE
 
@@ -30,7 +34,8 @@ CREATE DOMAIN tipologia_transazione AS
                             VALUE ~ 'Trasferimento');
 ```
 
-### Categoria transazione
+#### Categoria transazione
+
 ```SQL
 --DOMINIO CATEGORIA_TRANSAZIONE
 
@@ -40,7 +45,8 @@ CREATE DOMAIN categoria_transazione AS
                             VALUE ~ 'Stipendio');
 ```
 
-### Tipo Relazione
+#### Tipo Relazione
+
 ```SQL
 -- DOMINIO Tipo relazione
 
@@ -53,10 +59,10 @@ CREATE DOMAIN TipoRelazione AS
                                 VALUE = 'Amico');
 ```
 
+### Tabelle
 
-## Tabelle
+#### Portafoglio
 
-### Portafoglio
 ```SQL
 --TABELLA DEI PORTAFOGLI
 
@@ -67,7 +73,9 @@ CREATE TABLE portafoglio(
     nome_portafoglio VARCHAR(256) NOT NULL
 );
 ```
-### Conto
+
+#### Conto
+
 ```SQL
 --TABELLA DEI CONTI
 
@@ -88,7 +96,8 @@ CREATE TABLE conto(
 );
 ```
 
-### Persona
+#### Persona
+
 ```SQL
 --TABELLA DELLE PERSONE
 
@@ -100,7 +109,8 @@ CREATE TABLE Persona(
 );
 ```
 
-### Membreo
+#### Membro
+
 ```SQL
 --TABELLA DEI MEMBRI
 
@@ -114,7 +124,9 @@ CREATE TABLE Membro(
         ON UPDATE CASCADE
 )
 ```
-### Transazione
+
+#### Transazione
+
 ```SQL
 --TABELLA DELLE TRANSAZIONI
 
@@ -139,9 +151,9 @@ CREATE TABLE transazione(
 );
 ```
 
-## Trigger
+### Trigger
 
-### Creazione chiave primaria Portafoglio
+#### Creazione chiave primaria Portafoglio
 
 ```SQL
 --Trigger per settare la chiave primaria automaticamente
@@ -151,7 +163,7 @@ AS $$
 DECLARE
     pk portafoglio.id_portafoglio%TYPE;
 BEGIN
-	SELECT MAX(id_portafoglio) + 1 INTO pk FROM portafoglio;
+    SELECT MAX(id_portafoglio) + 1 INTO pk FROM portafoglio;
     IF(NEW.id_portafoglio != pk)THEN
         NEW.id_portafoglio := pk;
     END IF;
@@ -166,7 +178,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE PortafoglioPK();
 ```
 
-### Creazione chiave primaria Conto
+#### Creazione chiave primaria Conto
 
 ```SQL
 --Trigger per settare la chiave primaria automaticamente
@@ -176,7 +188,7 @@ AS $$
 DECLARE
     pk conto.id_conto%TYPE;
 BEGIN
-	SELECT MAX(id_conto) + 1 INTO pk FROM conto;
+    SELECT MAX(id_conto) + 1 INTO pk FROM conto;
     IF(NEW.id_conto != pk)THEN
         NEW.id_conto := pk;
     END IF;
@@ -191,7 +203,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE ContoPK();
 ```
 
-### Creazione chiave primaria Transazione
+#### Creazione chiave primaria Transazione
 
 ```SQL
 --Trigger per settare la chiave primaria automaticamente
@@ -201,10 +213,10 @@ AS $$
 DECLARE
     pk Transazione.id_transazione%TYPE;
 BEGIN
-	SELECT MAX(id_transazione) + 1 INTO pk FROM transazione;
-    IF(NEW.id_transazione != pk)THEN
-        NEW.id_transazione := pk;
-    END IF;
+    SELECT MAX(id_transazione) + 1 INTO pk FROM transazione;
+        IF(NEW.id_transazione != pk)THEN
+            NEW.id_transazione := pk;
+        END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -216,9 +228,9 @@ FOR EACH ROW
 EXECUTE PROCEDURE TransazionePK();
 ```
 
-## Inserimenti
+### Inserimenti
 
-### Portafogli
+#### Portafogli
 
 ```SQL
 --Inserimenti di esempio
@@ -227,7 +239,7 @@ INSERT INTO portafoglio VALUES(2, 'Familiare');
 INSERT INTO portafoglio VALUES(3, 'Aziendale');
 ```
 
-### Conti
+#### Conti
 
 ```SQL
 --Inserimenti di esempio
