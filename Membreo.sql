@@ -8,7 +8,7 @@ CREATE DOMAIN TipoRelazione AS
 
 CREATE TABLE Membro(
     Relazione TipoRelazione,
-    CodiceFiscale CHAR(16),
+    CodiceFiscale VARCHAR(16),
 
     CONSTRAINT fk_Membro FOREIGN KEY(CodiceFiscale)
         REFERENCES Persona(CodiceFiscale)

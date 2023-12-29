@@ -2,9 +2,9 @@
 
 CREATE TABLE portafoglio(
     --ID_PORTAFOLGIO identifica univocamente un portafoglio
-    id_portafoglio int PRIMARY KEY,
+    id_portafoglio INT PRIMARY KEY,
     --NOME_PORTAFOGLIO nome assegnato al portafolgio
-    nome_portafoglio varchar(255) NOT NULL
+    nome_portafoglio VARCHAR(256) NOT NULL
 );
 
 --Trigger per settare la chiave primaria automaticamente
@@ -14,7 +14,7 @@ AS $$
 DECLARE
     pk portafoglio.id_portafoglio%TYPE;
 BEGIN
-	SELECT MAX(id_portafoglio) + 1 into pk FROM portafoglio;
+	SELECT MAX(id_portafoglio) + 1 INTO pk FROM portafoglio;
     IF(NEW.id_portafoglio != pk)THEN
         NEW.id_portafoglio := pk;
     END IF;
