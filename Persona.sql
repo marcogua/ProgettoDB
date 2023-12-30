@@ -1,3 +1,5 @@
+--TABELLA DELLE PERSONE
+
 CREATE TABLE Persona(
     Nome VARCHAR(256),
     Cognome VARCHAR(256),
