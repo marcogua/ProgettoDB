@@ -6,4 +6,4 @@ CREATE DOMAIN TipoRelazione AS
                                 VALUE = 'Coniuge' OR
                                 VALUE = 'Figlio-Figlia' OR
                                 VALUE = 'Parente' OR
-                                VALUE = 'Amico')
+                                VALUE = 'Amico');

@@ -6,9 +6,9 @@ CREATE TABLE transazione(
     --TIPOLOGIA_TRANSAZIONE identifica la tipologia di transazione(entrata/uscita/trasferimento)
     tipologia_transazione tipologia_transazione,
     --DESCRIZIONE_TRANSAZIONE descrive la transazione
-    descrizione_transazione VARCHAR(256)
+    descrizione_transazione VARCHAR(255),
     --DATA_TRANSAZIONE data della transazione
-    data_transazione DATE NOT NULL
+    data_transazione DATE NOT NULL,
     --CATEGORIA_TRASAZIONE identifica la vategoria della transazione(svago/tasse/affitto)
     categoria_transazione categoria_transazione,
     --VALORE identifica l'importo della transazione
