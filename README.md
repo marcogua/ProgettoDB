@@ -247,3 +247,5 @@ INSERT INTO conto VALUES(1, 'Contanti', null , 51.25, 1);
 INSERT INTO conto VALUES(2, 'BBVA'; 'IT01S000000000000000000002', 4523.89, 1);
 INSERT INTO conto VALUES(3, 'Hype', 'IT02H000000000000000000001', 1235.22, 1);
 ```
+
+[//]: <> (cat categoria_transazione.sql, tipologia_transazione.sql, tipo_relazione.sql, persona.sql, membro.sql, portafoglio.sql, conto.sql, transazione.sql > progetto.sql)
