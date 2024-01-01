@@ -9,7 +9,7 @@ CREATE TABLE conto(
     iban VARCHAR(26),
     --SALDO saldo relativo al conto
     saldo DECIMAL NOT NULL DEFAULT 0.00,
-    id_portafoglio INT,
+    id_portafoglio INT NOT NULL,
     CONSTRAINT FK_id_portafoglio FOREIGN KEY(id_portafoglio)
         REFERENCES portafoglio(id_portafoglio)
         ON DELETE CASCADE

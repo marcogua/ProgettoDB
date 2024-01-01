@@ -2,9 +2,9 @@
 
 CREATE TABLE transazione(
     --ID_TRANSAZIONE identifica univocamente una transazione
-    id_transazione INT PRIMARY KEY,
+    id_transazione VARCHAR(22) PRIMARY KEY,
     --TIPOLOGIA_TRANSAZIONE identifica la tipologia di transazione(entrata/uscita/trasferimento)
-    tipologia_transazione tipologia_transazione,
+    tipologia_transazione tipologia_transazione NOT NULL,
     --DESCRIZIONE_TRANSAZIONE descrive la transazione
     descrizione_transazione VARCHAR(255),
     --DATA_TRANSAZIONE data della transazione
@@ -13,7 +13,7 @@ CREATE TABLE transazione(
     categoria_transazione categoria_transazione,
     --VALORE identifica l'importo della transazione
     valore DECIMAL NOT NULL,
-    id_conto INT,
+    id_conto INT NOT NULL,
     CONSTRAINT FK_id_conto FOREIGN KEY(id_conto)
         REFERENCES conto(id_conto)
         ON DELETE CASCADE
@@ -27,10 +27,8 @@ AS $$
 DECLARE
     pk Transazione.id_transazione%TYPE;
 BEGIN
-	SELECT MAX(id_transazione) + 1 INTO pk FROM transazione;
-    IF(NEW.id_transazione != pk)THEN
-        NEW.id_transazione := pk;
-    END IF;
+    SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(CURRENT_TIMESTAMP AS VARCHAR), '-', ''), ' ', ''), ':', ''), '.', ''), '+', '') INTO pk;
+    NEW.id_transazione := pk;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

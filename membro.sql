@@ -2,7 +2,7 @@
 
 CREATE TABLE membro(
     relazione tipo_relazione,
-    codice_fiscale VARCHAR(16),
+    codice_fiscale VARCHAR(16) NOT NULL,
     CONSTRAINT fk_Membro FOREIGN KEY(codice_fiscale)
         REFERENCES persona(codice_fiscale)
         ON DELETE CASCADE
