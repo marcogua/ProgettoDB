@@ -12,7 +12,7 @@ CREATE TABLE transazione(
     --CATEGORIA_TRASAZIONE identifica la vategoria della transazione(svago/tasse/affitto)
     categoria_transazione categoria_transazione,
     --VALORE identifica l'importo della transazione
-    valore DECIMAL NOT NULL,
+    importo DECIMAL NOT NULL,
     id_conto INT NOT NULL,
     CONSTRAINT FK_id_conto FOREIGN KEY(id_conto)
         REFERENCES conto(id_conto)

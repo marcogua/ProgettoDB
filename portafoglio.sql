@@ -4,7 +4,9 @@ CREATE TABLE portafoglio(
     --ID_PORTAFOLGIO identifica univocamente un portafoglio
     id_portafoglio INT PRIMARY KEY,
     --NOME_PORTAFOGLIO nome assegnato al portafolgio
-    nome_portafoglio VARCHAR(256) NOT NULL
+    nome_portafoglio VARCHAR(256) NOT NULL,
+    --SALDO totale dei conti del portafoglio
+    saldo DECIMAL NOT NULL DEFAULT 0.00
 );
 
 --Trigger per settare la chiave primaria automaticamente
