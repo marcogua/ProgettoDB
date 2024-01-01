@@ -18,7 +18,7 @@ CREATE TABLE conto(
         CHECK (iban ~ '^IT[0-9]{2}[A-Z]{1}[0-9]{21}$')
 );
 
---Trigger per settare la chiave primaria automaticamente
+--TRIGGER PER SETTARE IN AUTOMATICO LA CHIAVE PRIMARIA
 CREATE OR REPLACE FUNCTION ContoPK()
     RETURNS TRIGGER
 AS $$
@@ -38,3 +38,4 @@ BEFORE INSERT
 ON conto
 FOR EACH ROW
 EXECUTE PROCEDURE ContoPK();
+ 

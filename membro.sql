@@ -10,3 +10,4 @@ CREATE TABLE Membro(
     CONSTRAINT validate_codice_fiscale
         CHECK (CodiceFiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$')
 );
+ 

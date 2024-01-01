@@ -27,3 +27,4 @@ BEFORE INSERT
 ON portafoglio
 FOR EACH ROW
 EXECUTE PROCEDURE PortafoglioPK();
+ 

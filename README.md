@@ -21,6 +21,12 @@ del dominio per definire dettagli non specificati nella traccia.
 
 ## Documentazione
 
+### Creazione file unico per generare DB
+
+```Bash
+cat categoria_transazione.sql, tipologia_transazione.sql, tipo_relazione.sql, persona.sql, utente.sql, membro.sql, portafoglio.sql, conto.sql, transazione.sql, inserimenti_utente.sql, inserimenti_portafoglio.sql, inserimenti_conto.sql > SavingMoneyUnina.sql
+```
+
 ### Domini
 
 #### Tipologia transazione
@@ -85,14 +91,16 @@ CREATE TABLE conto(
     --NOME_CONTO nome assegnato al conto
     nome_conto VARCHAR(256) NOT NULL,
     --IBAN iban realtivo al conto se presete
-    iban VARCHAR(26) CHECK (iban ~ '^IT[0-9]{2}[A-Z]{1}[0-9]{21}$'),
+    iban VARCHAR(26),
     --SALDO saldo relativo al conto
     saldo DECIMAL NOT NULL DEFAULT 0.00,
     id_portafoglio INT,
     CONSTRAINT FK_id_portafoglio FOREIGN KEY(id_portafoglio)
         REFERENCES portafoglio(id_portafoglio)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT validate_iban
+        CHECK (iban ~ '^IT[0-9]{2}[A-Z]{1}[0-9]{21}$')
 );
 ```
 
@@ -102,10 +110,31 @@ CREATE TABLE conto(
 --TABELLA DELLE PERSONE
 
 CREATE TABLE Persona(
-    Nome VARCHAR(256) CHECK (Nome ~ '^([a-zA-Z ])+$'),
-    Cognome VARCHAR(256) CHECK (Cognome ~ '^([a-zA-Z ])+$'),
-    CodiceFiscale CHAR(16) CHECK (CodiceFiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$') PRIMARY KEY,
-    Telefono VARCHAR(15) CHECK (Telefono ~ '^\d{9,15}$')
+    Nome VARCHAR(256),
+    Cognome VARCHAR(256),
+    CodiceFiscale CHAR(16) PRIMARY KEY,
+    Telefono VARCHAR(15),
+    CONSTRAINT validate_nome
+        CHECK (Nome ~ '^([a-zA-Z ])+$'),
+    CONSTRAINT validate_cognome
+        CHECK (Cognome ~ '^([a-zA-Z ])+$'),
+    CONSTRAINT validate_codice_fiscale
+        CHECK (CodiceFiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$'),
+    CONSTRAINT validate_telefono
+        CHECK (Telefono ~ '^\d{9,15}$')
+);
+```
+
+#### Utente
+
+```SQL
+--TABELLA DEGLI UTENTI
+
+CREATE TABLE utente(
+    email VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    CONSTRAINT validate_email
+        CHECK (email ~ '^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$')
 );
 ```
 
@@ -117,12 +146,13 @@ CREATE TABLE Persona(
 CREATE TABLE Membro(
     Relazione TipoRelazione,
     CodiceFiscale VARCHAR(16),
-
     CONSTRAINT fk_Membro FOREIGN KEY(CodiceFiscale)
         REFERENCES Persona(CodiceFiscale)
         ON DELETE CASCADE
-        ON UPDATE CASCADE
-)
+        ON UPDATE CASCADE,
+    CONSTRAINT validate_codice_fiscale
+        CHECK (CodiceFiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$')
+);
 ```
 
 #### Transazione
@@ -233,7 +263,8 @@ EXECUTE PROCEDURE TransazionePK();
 #### Portafogli
 
 ```SQL
---Inserimenti di esempio
+--INSERIEMTNI DI ESEMPIO DELLA TABELLA PORTAFOGLIO
+
 INSERT INTO portafoglio VALUES(1, 'Personale');
 INSERT INTO portafoglio VALUES(2, 'Familiare');
 INSERT INTO portafoglio VALUES(3, 'Aziendale');
@@ -242,10 +273,18 @@ INSERT INTO portafoglio VALUES(3, 'Aziendale');
 #### Conti
 
 ```SQL
---Inserimenti di esempio
-INSERT INTO conto VALUES(1, 'Contanti', null , 51.25, 1);
-INSERT INTO conto VALUES(2, 'BBVA'; 'IT01S000000000000000000002', 4523.89, 1);
-INSERT INTO conto VALUES(3, 'Hype', 'IT02H000000000000000000001', 1235.22, 1);
+--INSERIMENTI DI ESEMPIO DELLA TABELLA CONTO
+
+INSERT INTO conto VALUES(1, 'Contanti', NULL , 51.25, 1);
+INSERT INTO conto VALUES(2, 'BBVA', 'IT01S000000000022200000002', 4523.89, 1);
+INSERT INTO conto VALUES(3, 'Hype', 'IT02H000000000011100000001', 1235.22, 1);
 ```
 
-[//]: <> (cat categoria_transazione.sql, tipologia_transazione.sql, tipo_relazione.sql, persona.sql, membro.sql, portafoglio.sql, conto.sql, transazione.sql > progetto.sql)
+#### Utenti
+
+```SQL
+--INSERIMENTI DI ESEMPIO DELLA TABELLA UTENTI
+
+INSERT INTO utente VALUES ('admin.admin@admin.admin', 'admin');
+INSERT INTO utente VALUES ('luca.rossi@email.it', 'LR.password12');
+```

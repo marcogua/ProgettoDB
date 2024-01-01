@@ -14,3 +14,4 @@ CREATE TABLE Persona(
     CONSTRAINT validate_telefono
         CHECK (Telefono ~ '^\d{9,15}$')
 );
+ 

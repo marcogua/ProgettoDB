@@ -40,3 +40,4 @@ BEFORE INSERT
 ON transazione
 FOR EACH ROW
 EXECUTE PROCEDURE TransazionePK();
+ 
