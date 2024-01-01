@@ -9,7 +9,7 @@ CREATE TABLE portafoglio(
     saldo DECIMAL NOT NULL DEFAULT 0.00
 );
 
---Trigger per settare la chiave primaria automaticamente
+--TRIGGER PER SETTARE IN AUTOMATICO LA CHIAVE PRIMARIA
 CREATE OR REPLACE FUNCTION PortafoglioPK()
     RETURNS TRIGGER
 AS $$

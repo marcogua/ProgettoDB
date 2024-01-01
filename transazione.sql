@@ -20,7 +20,7 @@ CREATE TABLE transazione(
         ON UPDATE CASCADE
 );
 
---Trigger per settare la chiave primaria automaticamente
+--TRIGGER PER SETTARE IN AUTOMATICO LA CHIAVE PRIMARIA
 CREATE OR REPLACE FUNCTION TransazionePK()
     RETURNS TRIGGER
 AS $$

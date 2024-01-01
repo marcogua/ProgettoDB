@@ -29,7 +29,7 @@ cat tipo_residenza.sql, categoria_transazione.sql, tipologia_transazione.sql, ti
 
 ### Tipi
 
-#### Tip residenza
+#### Tipo residenza
 
 ```SQL
 --CREAZIONE DEL TIPO STRUTTURATO RESIDENZA
@@ -51,9 +51,9 @@ CREATE TYPE residenza AS (
 --DOMINIO TIPOLOGIA_TRANSAZIONE
 
 CREATE DOMAIN tipologia_transazione AS 
-    VARCHAR NOT NULL CHECK (VALUE ~ 'Entrata' OR
-                            VALUE ~ 'Uscita' OR
-                            VALUE ~ 'Trasferimento');
+    VARCHAR NOT NULL CHECK (VALUE = 'Entrata' OR
+                            VALUE = 'Uscita' OR
+                            VALUE = 'Trasferimento');
 ```
 
 #### Categoria transazione
@@ -62,9 +62,10 @@ CREATE DOMAIN tipologia_transazione AS
 --DOMINIO CATEGORIA_TRANSAZIONE
 
 CREATE DOMAIN categoria_transazione AS 
-    VARCHAR NOT NULL CHECK (VALUE ~ 'Intrattenimento' OR
-                            VALUE ~ 'Tasse' OR
-                            VALUE ~ 'Stipendio');
+    VARCHAR NOT NULL CHECK (VALUE = 'Intrattenimento' OR
+                            VALUE = 'Tasse' OR
+                            VALUE = 'Stipendio' OR
+                            VALUE = 'Investimento');
 ```
 
 #### Tipo Relazione
@@ -92,7 +93,9 @@ CREATE TABLE portafoglio(
     --ID_PORTAFOLGIO identifica univocamente un portafoglio
     id_portafoglio INT PRIMARY KEY,
     --NOME_PORTAFOGLIO nome assegnato al portafolgio
-    nome_portafoglio VARCHAR(256) NOT NULL
+    nome_portafoglio VARCHAR(256) NOT NULL,
+    --SALDO totale dei conti del portafoglio
+    saldo DECIMAL NOT NULL DEFAULT 0.00
 );
 ```
 
@@ -110,7 +113,7 @@ CREATE TABLE conto(
     iban VARCHAR(26),
     --SALDO saldo relativo al conto
     saldo DECIMAL NOT NULL DEFAULT 0.00,
-    id_portafoglio INT,
+    id_portafoglio INT NOT NULL,
     CONSTRAINT FK_id_portafoglio FOREIGN KEY(id_portafoglio)
         REFERENCES portafoglio(id_portafoglio)
         ON DELETE CASCADE
@@ -253,17 +256,15 @@ EXECUTE PROCEDURE ContoPK();
 #### Creazione chiave primaria Transazione
 
 ```SQL
---Trigger per settare la chiave primaria automaticamente
+--TRIGGER PER SETTARE IN AUTOMATICO LA CHIAVE PRIMARIA
 CREATE OR REPLACE FUNCTION TransazionePK()
     RETURNS TRIGGER
 AS $$
 DECLARE
     pk Transazione.id_transazione%TYPE;
 BEGIN
-    SELECT MAX(id_transazione) + 1 INTO pk FROM transazione;
-        IF(NEW.id_transazione != pk)THEN
-            NEW.id_transazione := pk;
-        END IF;
+    SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(CURRENT_TIMESTAMP AS VARCHAR), '-', ''), ' ', ''), ':', ''), '.', ''), '+', '') INTO pk;
+    NEW.id_transazione := pk;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -282,9 +283,9 @@ EXECUTE PROCEDURE TransazionePK();
 ```SQL
 --INSERIEMTNI DI ESEMPIO DELLA TABELLA PORTAFOGLIO
 
-INSERT INTO portafoglio VALUES(1, 'Personale');
-INSERT INTO portafoglio VALUES(2, 'Familiare');
-INSERT INTO portafoglio VALUES(3, 'Aziendale');
+INSERT INTO portafoglio VALUES(1, 'Personale', 2000.00);
+INSERT INTO portafoglio VALUES(2, 'Familiare', 5000.00);
+INSERT INTO portafoglio VALUES(3, 'Aziendale', 2500.00);
 ```
 
 #### Conti
@@ -293,8 +294,14 @@ INSERT INTO portafoglio VALUES(3, 'Aziendale');
 --INSERIMENTI DI ESEMPIO DELLA TABELLA CONTO
 
 INSERT INTO conto VALUES(1, 'Contanti', NULL , 51.25, 1);
-INSERT INTO conto VALUES(2, 'BBVA', 'IT01S000000000022200000002', 4523.89, 1);
-INSERT INTO conto VALUES(3, 'Hype', 'IT02H000000000011100000001', 1235.22, 1);
+INSERT INTO conto VALUES(2, 'BBVA', 'IT29P8440115377743262655956', 1248.50, 1);
+INSERT INTO conto VALUES(3, 'Hype', 'IT36B1690816578157590551079', 700.25, 1);
+INSERT INTO conto VALUES(4, 'Contanti', NULL , 100.00, 2);
+INSERT INTO conto VALUES(5, 'BBVA', 'IT38A2128392556003642900114', 4500.00, 2);
+INSERT INTO conto VALUES(6, 'Hype Premium', 'IT04S8351927801180083641532', 400.00, 2);
+INSERT INTO conto VALUES(7, 'Intesa San Paolo', 'IT45R6803462892261131810825' , 1000.00, 3);
+INSERT INTO conto VALUES(8, 'BPER Business', 'IT53Q7513393390277705543243', 750.00, 3);
+INSERT INTO conto VALUES(9, 'AMEX Platinum', 'IT52S6907808060854807743999', 750.00, 3);
 ```
 
 #### Utenti
@@ -313,4 +320,50 @@ INSERT into utente values ('mario.rossi@email.com', 'password');
 --INSERIMENTI DI ESEMPIO DELLA TABELLA PERSONA
 
 INSERT INTO persona VALUES('Mario', 'Rossi', 'RSSMRA90A01F839Y', ROW('via mario rossi', '12', '12345', 'Acerra', 'Napoli'), '0818907665');
+```
+
+### Viste
+
+#### Vista budget intrattenimento
+
+```SQL
+--VISTA BUDGET INTATTENIMENTO
+
+CREATE OR REPLACE VIEW budegt_intrattenimento AS
+Select SUM(transazione.importo) as totale_intrattenimento
+FROM transazione
+WHERE categoria_transazione = 'Intrattenimento';
+```
+
+#### Vista budegt stipendio
+
+```SQL
+--VISTA BUDGET STIPENDIO
+
+CREATE OR REPLACE VIEW budegt_stipendio AS
+Select SUM(transazione.importo) as totale_stipendio
+FROM transazione
+WHERE categoria_transazione = 'Stipendio';
+```
+
+#### Vista budget tasse
+
+```SQL
+--VISTA BUDGET TASSE
+
+CREATE OR REPLACE VIEW budegt_tasse AS
+Select SUM(transazione.importo) as totale_tasse
+FROM transazione
+WHERE categoria_transazione = 'Tasse';
+```
+
+#### Vista budget investimento
+
+```SQL
+--VISTA BUDGET INVESTIMENTO
+
+CREATE OR REPLACE VIEW budegt_investimento AS
+Select SUM(transazione.importo) as totale_investimento
+FROM transazione
+WHERE categoria_transazione = 'Investimento';
 ```
