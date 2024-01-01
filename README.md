@@ -24,7 +24,23 @@ del dominio per definire dettagli non specificati nella traccia.
 ### Creazione file unico per generare DB
 
 ```Bash
-cat categoria_transazione.sql, tipologia_transazione.sql, tipo_relazione.sql, persona.sql, utente.sql, membro.sql, portafoglio.sql, conto.sql, transazione.sql, inserimenti_utente.sql, inserimenti_portafoglio.sql, inserimenti_conto.sql > SavingMoneyUnina.sql
+cat tipo_residenza.sql, categoria_transazione.sql, tipologia_transazione.sql, tipo_relazione.sql, persona.sql, utente.sql, membro.sql, portafoglio.sql, conto.sql, transazione.sql, inserimenti_utente.sql, inserimenti_portafoglio.sql, inserimenti_conto.sql > SavingMoneyUnina.sql
+```
+
+### Tipi
+
+#### Tip residenza
+
+```SQL
+--CREAZIONE DEL TIPO STRUTTURATO RESIDENZA
+
+CREATE TYPE residenza AS (
+    via VARCHAR(255),
+    civico VARCHAR(5),
+    cap VARCHAR(5),
+    citta VARCHAR(255),
+    provincia VARCHAR(255)
+);
 ```
 
 ### Domini
@@ -54,9 +70,9 @@ CREATE DOMAIN categoria_transazione AS
 #### Tipo Relazione
 
 ```SQL
--- DOMINIO Tipo relazione
+--DOMINIO TIPO_RELAZIONE
 
-CREATE DOMAIN TipoRelazione AS 
+CREATE DOMAIN tipo_relazione AS 
     VARCHAR(1000) NOT NULL CHECK(
                                 VALUE = 'Fratello-Sorella' OR
                                 VALUE = 'Coniuge' OR
@@ -109,19 +125,20 @@ CREATE TABLE conto(
 ```SQL
 --TABELLA DELLE PERSONE
 
-CREATE TABLE Persona(
-    Nome VARCHAR(256),
-    Cognome VARCHAR(256),
-    CodiceFiscale CHAR(16) PRIMARY KEY,
-    Telefono VARCHAR(15),
+CREATE TABLE persona(
+    nome VARCHAR(256) NOT NULL,
+    cognome VARCHAR(256) NOT NULL,
+    codice_fiscale CHAR(16) PRIMARY KEY,
+    residenza residenza NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
     CONSTRAINT validate_nome
-        CHECK (Nome ~ '^([a-zA-Z ])+$'),
+        CHECK (nome ~ '^([a-zA-Z ])+$'),
     CONSTRAINT validate_cognome
-        CHECK (Cognome ~ '^([a-zA-Z ])+$'),
+        CHECK (cognome ~ '^([a-zA-Z ])+$'),
     CONSTRAINT validate_codice_fiscale
-        CHECK (CodiceFiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$'),
+        CHECK (codice_fiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$'),
     CONSTRAINT validate_telefono
-        CHECK (Telefono ~ '^\d{9,15}$')
+        CHECK (telefono ~ '^\d{9,15}$')
 );
 ```
 
@@ -143,15 +160,15 @@ CREATE TABLE utente(
 ```SQL
 --TABELLA DEI MEMBRI
 
-CREATE TABLE Membro(
-    Relazione TipoRelazione,
-    CodiceFiscale VARCHAR(16),
-    CONSTRAINT fk_Membro FOREIGN KEY(CodiceFiscale)
-        REFERENCES Persona(CodiceFiscale)
+CREATE TABLE membro(
+    relazione tipo_relazione,
+    codice_fiscale VARCHAR(16),
+    CONSTRAINT fk_Membro FOREIGN KEY(codice_fiscale)
+        REFERENCES persona(codice_fiscale)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     CONSTRAINT validate_codice_fiscale
-        CHECK (CodiceFiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$')
+        CHECK (codice_fiscale ~ '^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$')
 );
 ```
 
@@ -287,4 +304,13 @@ INSERT INTO conto VALUES(3, 'Hype', 'IT02H000000000011100000001', 1235.22, 1);
 
 INSERT INTO utente VALUES ('admin.admin@admin.admin', 'admin');
 INSERT INTO utente VALUES ('luca.rossi@email.it', 'LR.password12');
+INSERT into utente values ('mario.rossi@email.com', 'password');
+```
+
+#### Persone
+
+```SQL
+--INSERIMENTI DI ESEMPIO DELLA TABELLA PERSONA
+
+INSERT INTO persona VALUES('Mario', 'Rossi', 'RSSMRA90A01F839Y', ROW('via mario rossi', '12', '12345', 'Acerra', 'Napoli'), '0818907665');
 ```

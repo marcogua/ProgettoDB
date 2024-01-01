@@ -1,0 +1,3 @@
+--INSERIMENTI DI ESEMPIO DELLA TABELLA PERSONA
+
+INSERT INTO persona VALUES('Mario', 'Rossi', 'RSSMRA90A01F839Y', ROW('via mario rossi', '12', '12345', 'Acerra', 'Napoli'), '0818907665');

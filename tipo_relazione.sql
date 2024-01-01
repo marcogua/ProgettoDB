@@ -1,6 +1,6 @@
 --DOMINIO TIPO_RELAZIONE
 
-CREATE DOMAIN TipoRelazione AS 
+CREATE DOMAIN tipo_relazione AS 
     VARCHAR(1000) NOT NULL CHECK(
                                 VALUE = 'Fratello-Sorella' OR
                                 VALUE = 'Coniuge' OR
