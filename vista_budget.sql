@@ -25,3 +25,5 @@ CREATE OR REPLACE VIEW budegt_investimento AS
 Select SUM(transazione.importo) as totale_investimento
 FROM transazione
 WHERE categoria_transazione = 'Investimento';
+
+CREATE OR REPLACE VIEW budget_entate AS

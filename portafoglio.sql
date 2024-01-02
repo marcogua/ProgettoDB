@@ -29,4 +29,10 @@ BEFORE INSERT
 ON portafoglio
 FOR EACH ROW
 EXECUTE PROCEDURE PortafoglioPK();
+
+--INSERIEMTNI DI ESEMPIO DELLA TABELLA PORTAFOGLIO
+
+INSERT INTO portafoglio VALUES(1, 'Personale', 2000.00);
+INSERT INTO portafoglio VALUES(2, 'Familiare', 5000.00);
+INSERT INTO portafoglio VALUES(3, 'Aziendale', 2500.00);
  

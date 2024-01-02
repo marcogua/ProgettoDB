@@ -1,3 +1,18 @@
+--DOMINIO CATEGORIA_TRANSAZIONE
+
+CREATE DOMAIN categoria_transazione AS 
+    VARCHAR NOT NULL CHECK (VALUE = 'Intrattenimento' OR
+                            VALUE = 'Tasse' OR
+                            VALUE = 'Stipendio' OR
+                            VALUE = 'Investimento');
+
+--DOMINIO TIPOLOGIA_TRANSAZIONE
+
+CREATE DOMAIN tipologia_transazione AS 
+    VARCHAR NOT NULL CHECK (VALUE = 'Entrata' OR
+                            VALUE = 'Uscita' OR
+                            VALUE = 'Trasferimento');
+
 --TABELLA DELLE TRANSAZIONI
 
 CREATE TABLE transazione(
@@ -38,4 +53,7 @@ BEFORE INSERT
 ON transazione
 FOR EACH ROW
 EXECUTE PROCEDURE TransazionePK();
- 
+
+--INSERIMENTI DI ESEMPIO DELLA TABLLA TRANSAZIONE
+
+INSERT INTO transazione VALUES (NULL, 'Entrata', 'Stipendio gennaio 2024', '2024-01-01', 'Stipendio', 1000.00, 2);

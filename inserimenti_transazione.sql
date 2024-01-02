@@ -1,4 +1,0 @@
---INSERIMENTI DI ESEMPIO DELLA TABLLA TRANSAZIONE
-
-INSERT INTO transazione VALUES (NULL, 'Entrata', 'Stipendio gennaio 2024', '2024-01-01', 'Stipendio', 1000.00, 2);
- 

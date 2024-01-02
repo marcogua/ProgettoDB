@@ -24,7 +24,7 @@ del dominio per definire dettagli non specificati nella traccia.
 ### Creazione file unico per generare DB
 
 ```Bash
-cat tipo_residenza.sql, categoria_transazione.sql, tipologia_transazione.sql, tipo_relazione.sql, persona.sql, utente.sql, membro.sql, portafoglio.sql, conto.sql, transazione.sql, inserimenti_utente.sql, inserimenti_portafoglio.sql, inserimenti_conto.sql > SavingMoneyUnina.sql
+cat persona.sql, membro.sql, utente.sql, portafoglio.sql, conto.sql, transazione.sql > SavingMoneyUnina.sql
 ```
 
 ### Tipi
