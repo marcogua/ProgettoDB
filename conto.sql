@@ -46,7 +46,7 @@ AS $$
 DECLARE
     valore conto.saldo%TYPE;
 BEGIN
-	SELECT SUM(saldo)
+	SELECT COALESCE(SUM(saldo), 0.00)
 	FROM conto 
     INTO valore;
 	UPDATE portafoglio 

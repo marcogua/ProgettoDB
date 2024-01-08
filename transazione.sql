@@ -50,7 +50,7 @@ CREATE OR REPLACE FUNCTION TransazionePK()
     RETURNS TRIGGER
 AS $$
 DECLARE
-    pk Transazione.id_transazione%TYPE;
+    pk transazione.id_transazione%TYPE;
 BEGIN
     SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(CURRENT_TIMESTAMP AS VARCHAR), '-', ''), ' ', ''), ':', ''), '.', ''), '+', '') INTO pk;
     NEW.id_transazione := pk;
@@ -69,10 +69,10 @@ CREATE OR REPLACE FUNCTION UpdateConto()
     RETURNS TRIGGER
 AS $$
 DECLARE
-    valore Transazione.importo%TYPE;
+    valore transazione.importo%TYPE;
 BEGIN
 	SELECT SUM(importo) - (
-		SELECT SUM(importo) 
+		SELECT COALESCE(SUM(importo), 0.00) 
 		FROM transazione 
 		WHERE tipologia_transazione = 'Uscita') 
 	FROM transazione 
