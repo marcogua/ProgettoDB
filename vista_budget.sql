@@ -27,3 +27,6 @@ FROM transazione
 WHERE categoria_transazione = 'Investimento';
 
 CREATE OR REPLACE VIEW budget_entate AS
+SELECT SUM(transazione.importo) AS totale_entrate
+FROM transazione
+WHERE tipologia_transazione = 'Entrata';
