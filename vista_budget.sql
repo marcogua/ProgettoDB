@@ -30,3 +30,8 @@ CREATE OR REPLACE VIEW budget_entate AS
 SELECT SUM(transazione.importo) AS totale_entrate
 FROM transazione
 WHERE tipologia_transazione = 'Entrata';
+
+CREATE OR REPLACE VIEW budget_uscite AS
+SELECT SUM(transazione.importo) AS totale_uscite
+FROM transazione
+WHERE tipologia_transazione = 'Uscita';
