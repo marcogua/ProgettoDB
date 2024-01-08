@@ -2,9 +2,19 @@
 
 CREATE DOMAIN categoria_transazione AS 
     VARCHAR NOT NULL CHECK (VALUE = 'Intrattenimento' OR
-                            VALUE = 'Tasse' OR
-                            VALUE = 'Stipendio' OR
-                            VALUE = 'Investimento');
+                            VALUE = 'Tasse e bolette' OR
+                            VALUE = 'Lavoro' OR
+                            VALUE = 'Investimento' OR
+                            VALUE = 'Salute' OR
+                            VALUE = 'Fitness' OR
+                            VALUE = 'Regali' OR
+                            VALUE = 'Cibo e bevande' OR
+                            VALUE = 'Alimentari' OR
+                            VALUE = 'Trasporti' OR
+                            VALUE = 'Shopping' OR
+                            VALUE = 'Viaggi' OR
+                            VALUE = 'Istruzione' OR
+                            VALUE = 'Casa');
 
 --DOMINIO TIPOLOGIA_TRANSAZIONE
 
@@ -83,4 +93,4 @@ EXECUTE PROCEDURE UpdateConto();
 
 --INSERIMENTI DI ESEMPIO DELLA TABLLA TRANSAZIONE
 
-INSERT INTO transazione VALUES (NULL, 'Entrata', 'Stipendio gennaio 2024', '2024-01-01', 'Stipendio', 1000.00, 2);
+INSERT INTO transazione VALUES (NULL, 'Entrata', 'Stipendio gennaio 2024', '2024-01-01', 'Lavoro', 1000.00, 2);
