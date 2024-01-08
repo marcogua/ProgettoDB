@@ -54,6 +54,33 @@ ON transazione
 FOR EACH ROW
 EXECUTE PROCEDURE TransazionePK();
 
+--TRIGGER PER L'AGGIORNAMENTO AUTOMATICO DEL CONTO QUANDO VIENE INSERITA UNA TRANSAZIONE
+CREATE OR REPLACE FUNCTION UpdateConto()
+    RETURNS TRIGGER
+AS $$
+DECLARE
+    valore Transazione.importo%TYPE;
+BEGIN
+	SELECT SUM(importo) - (
+		SELECT SUM(importo) 
+		FROM transazione 
+		WHERE tipologia_transazione = 'Uscita') 
+	FROM transazione 
+    INTO valore
+	WHERE tipologia_transazione = 'Entrata';
+	UPDATE conto 
+	SET saldo= valore
+	WHERE id_conto = NEW.id_conto;
+    return NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER UpdateConto
+AFTER INSERT OR UPDATE OR DELETE
+ON transazione
+FOR EACH ROW
+EXECUTE PROCEDURE UpdateConto();
+
 --INSERIMENTI DI ESEMPIO DELLA TABLLA TRANSAZIONE
 
 INSERT INTO transazione VALUES (NULL, 'Entrata', 'Stipendio gennaio 2024', '2024-01-01', 'Stipendio', 1000.00, 2);
